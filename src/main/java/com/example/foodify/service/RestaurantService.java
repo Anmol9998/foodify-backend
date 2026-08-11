@@ -27,6 +27,7 @@ public class RestaurantService {
 }
 public Restaurant getRestaurantById(Long id){
       Optional<Restaurant> restaurant = restaurantRepository.findById(id);
+      
     if(restaurant.isEmpty()){
        throw new RestaurantNotFoundException("Restaurant not found with id: " + id);
     }
@@ -41,18 +42,15 @@ public Restaurant getRestaurantById(Long id){
     restaurantRepository.deleteById(id);
  }
 
- public Optional<Restaurant>updateRestaurant(Long id,   Restaurant updatedRestaurant){
-    Optional<Restaurant> restaurant = restaurantRepository.findById(id);
-    if(restaurant.isEmpty()){
-        return Optional.empty();
-    }
-    Restaurant existingRestaurant = restaurant.get();
+ public Restaurant updateRestaurant(Long id,   Restaurant updatedRestaurant){
+           
+    Restaurant existingRestaurant =  getRestaurantById(id);
     existingRestaurant.setName(updatedRestaurant.getName());
     existingRestaurant.setAddress(updatedRestaurant.getAddress());
     existingRestaurant.setCuisine(updatedRestaurant.getCuisine());
     existingRestaurant.setRating(updatedRestaurant.getRating());
-
-    return Optional.of(existingRestaurant);
+    restaurantRepository.save(existingRestaurant);
+    return existingRestaurant;
 
  }
 }
