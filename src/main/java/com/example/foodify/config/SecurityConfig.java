@@ -45,11 +45,17 @@ public class SecurityConfig {
 
     .requestMatchers("/api/auth/**").permitAll()
 
+    .requestMatchers(HttpMethod.PATCH, "/api/orders/*/status")
+    .hasRole("ADMIN")
+    .requestMatchers("/api/orders", "/api/orders/**")
+    .hasAnyRole("USER", "ADMIN")
+
     .requestMatchers(HttpMethod.GET, "/api/restaurants/**")
     .hasAnyRole("USER", "ADMIN")
 
     .requestMatchers(HttpMethod.GET, "/api/foods/**")
     .hasAnyRole("USER", "ADMIN")
+
 
     .requestMatchers(HttpMethod.POST, "/api/restaurants/**")
     .hasRole("ADMIN")
